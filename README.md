@@ -44,6 +44,49 @@ pip install "git+https://github.com/Unwrenchable/BlueScreenHelp.git"
 
 ---
 
+## 💾 Run Directly from a USB Drive (No Install Needed)
+
+You can clone the repo to a USB drive and run it on any Windows PC that has Python — no prior installation required.
+
+### Step 1 — Clone the repo to your USB drive
+
+```powershell
+# In PowerShell or Command Prompt, replace D:\ with your USB drive letter
+git clone https://github.com/Unwrenchable/BlueScreenHelp.git D:\BlueScreenHelp
+cd D:\BlueScreenHelp
+```
+
+### Step 2 — Launch the tool
+
+**Option A — Double-click launcher (Windows):**
+```
+D:\BlueScreenHelp\run.bat
+```
+
+**Option B — PowerShell launcher:**
+```powershell
+.\run.ps1                    # interactive menu
+.\run.ps1 diagnose           # full diagnostic
+.\run.ps1 troubleshoot       # step-by-step troubleshooter
+.\run.ps1 report --format html   # save HTML report
+```
+
+**Option C — Directly via Python (any OS):**
+```bash
+python -m agent              # interactive menu
+python -m agent diagnose     # full diagnostic
+python -m agent troubleshoot # step-by-step troubleshooter
+python -m agent report       # save diagnostic report
+python -m agent info         # quick system info
+python -m agent --help       # show all commands
+```
+
+> **Tip:** `run.bat` and `run.ps1` automatically install the only required dependency
+> (`click`) if it is missing — so you can carry the repo on a USB and use it on any
+> machine without running `install.ps1` first.
+
+---
+
 ## 🛠️ What the Tool Does
 
 | Command | Description |
@@ -218,6 +261,7 @@ bsh --help               # try the CLI
 ```
 BlueScreenHelp/
 ├── agent/                   # Python CLI tool (bsh command)
+│   ├── __main__.py          # Enables `python -m agent` (USB / no-install mode)
 │   ├── cli.py               # Click entry-point
 │   ├── diagnostics.py       # Windows health checks
 │   ├── troubleshooter.py    # Decision-tree troubleshooter
@@ -233,7 +277,9 @@ BlueScreenHelp/
 │   ├── windows-media-creation.md
 │   └── windows-activation.md
 ├── tests/                   # pytest test suite
-├── install.ps1              # 1-click Windows installer
+├── install.ps1              # 1-click Windows installer (full install)
+├── run.bat                  # USB launcher — no install required (Windows)
+├── run.ps1                  # USB launcher — no install required (PowerShell)
 └── pyproject.toml           # Python package config
 ```
 

@@ -2,6 +2,9 @@
 Tests for agent/cli.py (Click commands)
 """
 
+import subprocess
+import sys
+
 import pytest
 from click.testing import CliRunner
 
@@ -82,3 +85,48 @@ class TestCLI:
         result = self.runner.invoke(cli, ["troubleshoot"], input="1\n1\n1\nq\n")
         assert result.exit_code == 0
         assert "RAM" in result.output or "MemTest" in result.output
+
+
+class TestModuleEntryPoint:
+    """Tests for `python -m agent` (USB / no-install mode)."""
+
+    def test_module_help(self):
+        """python -m agent --help should print usage and exit 0."""
+        result = subprocess.run(
+            [sys.executable, "-m", "agent", "--help"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "diagnose" in result.stdout
+        assert "troubleshoot" in result.stdout
+
+    def test_module_version(self):
+        """python -m agent --version should print the version and exit 0."""
+        result = subprocess.run(
+            [sys.executable, "-m", "agent", "--version"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "1.0.0" in result.stdout
+
+    def test_module_info(self):
+        """python -m agent info should show OS Info and exit 0."""
+        result = subprocess.run(
+            [sys.executable, "-m", "agent", "info"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "OS Info" in result.stdout
+
+    def test_module_diagnose_info_check(self):
+        """python -m agent diagnose --checks info should succeed."""
+        result = subprocess.run(
+            [sys.executable, "-m", "agent", "diagnose", "--checks", "info"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "OS Info" in result.stdout
