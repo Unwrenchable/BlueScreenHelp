@@ -1,6 +1,73 @@
 # BlueScreenHelp
 
-A comprehensive, community-maintained guide to help you recover your PC from blue screen errors and boot failures — **without losing your data**.
+A comprehensive, community-maintained guide **and real plug-and-play tool** to help you recover your PC from blue screen errors and boot failures — **without losing your data**.
+
+---
+
+## ⚡ Quick Start — The Tool
+
+BlueScreenHelp ships as an actual working diagnostic and recovery agent, not just docs.
+
+### 1-Click Windows Install (PowerShell)
+
+```powershell
+# Open PowerShell (no admin needed), then:
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned   # one-time
+irm https://raw.githubusercontent.com/Unwrenchable/BlueScreenHelp/main/install.ps1 | iex
+```
+
+Or clone the repo and run locally:
+
+```powershell
+git clone https://github.com/Unwrenchable/BlueScreenHelp.git
+cd BlueScreenHelp
+.\install.ps1
+```
+
+Open a **new terminal**, then you're ready:
+
+```
+bsh                          # interactive menu
+bsh diagnose                 # full system diagnostic (disk, RAM, BSOD events, drivers…)
+bsh troubleshoot             # guided step-by-step troubleshooter
+bsh report --save            # save an HTML + TXT diagnostic report to disk
+bsh diagnose --ai            # optional AI-powered analysis (needs OPENAI_API_KEY)
+```
+
+### Python install (cross-platform)
+
+```bash
+pip install bluescreenhelp        # from PyPI (when published)
+# or directly from source:
+pip install "git+https://github.com/Unwrenchable/BlueScreenHelp.git"
+```
+
+---
+
+## 🛠️ What the Tool Does
+
+| Command | Description |
+|---|---|
+| `bsh diagnose` | Runs 10 health checks: disk SMART, RAM, BSOD event logs, DISM integrity, boot config, drivers, activation, CPU temp, network |
+| `bsh diagnose --checks disk,memory` | Run only specific checks |
+| `bsh diagnose --save` | Save results as HTML + TXT report |
+| `bsh diagnose --ai` | Get AI-powered analysis of results |
+| `bsh troubleshoot` | Interactive decision-tree covering BSOD, boot failures, slow system, no display, activation |
+| `bsh info` | Quick system info snapshot |
+| `bsh report` | Full diagnostic + save report |
+
+### PowerShell scripts (no Python required)
+
+```powershell
+# Full diagnostic report (saves HTML to Desktop with -SaveReport)
+.\scripts\Invoke-WindowsDiagnostic.ps1 -SaveReport
+
+# Automated repair: SFC → DISM → chkdsk → bootrec
+.\scripts\Repair-Windows.ps1
+
+# BSOD info: event log + minidump files + stop-code reference
+.\scripts\Get-BSODInfo.ps1
+```
 
 ---
 
@@ -135,3 +202,38 @@ If none of the above steps resolve the issue, describe your setup when asking fo
 ## Contributing
 
 Found a fix that worked for you? Open a pull request or issue to help others in the community!
+
+### Developing the agent
+
+```bash
+git clone https://github.com/Unwrenchable/BlueScreenHelp.git
+cd BlueScreenHelp
+pip install -e ".[dev]"
+pytest tests/ -v         # run all tests
+bsh --help               # try the CLI
+```
+
+### Project structure
+
+```
+BlueScreenHelp/
+├── agent/                   # Python CLI tool (bsh command)
+│   ├── cli.py               # Click entry-point
+│   ├── diagnostics.py       # Windows health checks
+│   ├── troubleshooter.py    # Decision-tree troubleshooter
+│   ├── reporter.py          # HTML / TXT / JSON report generator
+│   └── ai_helper.py         # Optional AI-powered analysis
+├── scripts/                 # PowerShell scripts (no Python needed)
+│   ├── Invoke-WindowsDiagnostic.ps1
+│   ├── Repair-Windows.ps1
+│   └── Get-BSODInfo.ps1
+├── docs/                    # Detailed written guides
+│   ├── usb-boot-recovery.md
+│   ├── diagnostic-tools.md
+│   ├── windows-media-creation.md
+│   └── windows-activation.md
+├── tests/                   # pytest test suite
+├── install.ps1              # 1-click Windows installer
+└── pyproject.toml           # Python package config
+```
+
