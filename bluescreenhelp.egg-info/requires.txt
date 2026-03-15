@@ -1,8 +1,0 @@
-click>=8.0.0
-
-[ai]
-openai>=1.0.0
-
-[dev]
-pytest>=7.0
-pytest-cov
