@@ -1,0 +1,2 @@
+[console_scripts]
+bsh = agent.cli:main

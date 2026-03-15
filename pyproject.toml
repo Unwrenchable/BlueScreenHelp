@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bluescreenhelp"
+version = "1.0.0"
+description = "Windows diagnostic & recovery agent — BlueScreenHelp"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "BlueScreenHelp Community"}
+]
+keywords = ["windows", "bsod", "diagnostic", "recovery", "troubleshooting"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: Microsoft :: Windows",
+    "Environment :: Console",
+    "Topic :: System :: Systems Administration",
+]
+dependencies = [
+    "click>=8.0.0",
+]
+
+[project.optional-dependencies]
+ai = ["openai>=1.0.0"]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[project.scripts]
+bsh = "agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
