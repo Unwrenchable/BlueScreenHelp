@@ -1,6 +1,8 @@
 # BlueScreenHelp
 
-A comprehensive, community-maintained guide **and real plug-and-play tool** to help you recover your PC from blue screen errors and boot failures — **without losing your data**.
+A comprehensive tool **and guide** to help you recover your PC from blue screen errors and boot failures — **and actually recover your personal data from dead/failing drives**.
+
+**Now with real data recovery:** BlueScreenHelp isn't just documentation anymore. It includes built-in tools to resurrect failing drives and extract your personal files, even when Windows won't boot or the file system is corrupted.
 
 ---
 
@@ -32,6 +34,13 @@ bsh diagnose                 # full system diagnostic (disk, RAM, BSOD events, d
 bsh troubleshoot             # guided step-by-step troubleshooter
 bsh report --save            # save an HTML + TXT diagnostic report to disk
 bsh diagnose --ai            # optional AI-powered analysis (needs OPENAI_API_KEY)
+
+# 💾 NEW: Data Recovery Features
+bsh scan-drive -d list       # list all drives
+bsh scan-drive -d "\\\\.\\PhysicalDrive0"  # scan a specific drive
+bsh recover -d "\\\\.\\C:" -o D:\\Recovery  # recover files from failing drive
+bsh recover -d "\\\\.\\PhysicalDrive1" -o D:\\Recovery --types jpg,pdf,docx
+bsh image-drive -d "\\\\.\\PhysicalDrive0" -o backup.img  # create disk image
 ```
 
 ### Python install (cross-platform)
@@ -89,6 +98,8 @@ python -m agent --help       # show all commands
 
 ## 🛠️ What the Tool Does
 
+### Diagnostic & Troubleshooting
+
 | Command | Description |
 |---|---|
 | `bsh diagnose` | Runs 10 health checks: disk SMART, RAM, BSOD event logs, DISM integrity, boot config, drivers, activation, CPU temp, network |
@@ -98,6 +109,26 @@ python -m agent --help       # show all commands
 | `bsh troubleshoot` | Interactive decision-tree covering BSOD, boot failures, slow system, no display, activation |
 | `bsh info` | Quick system info snapshot |
 | `bsh report` | Full diagnostic + save report |
+
+### 💾 Data Recovery (NEW!)
+
+| Command | Description |
+|---|---|
+| `bsh scan-drive -d <path>` | Scan a drive and assess recovery options; use `list` to see all drives |
+| `bsh recover -d <drive> -o <output>` | **Recover files from a failing or corrupted drive** using file signature detection |
+| `bsh recover --types jpg,pdf,docx` | Recover only specific file types (30+ formats supported) |
+| `bsh recover --method carving` | Use signature-based recovery (works even with corrupted file systems) |
+| `bsh recover --method filesystem` | Use file system scanning (NTFS/FAT32) |
+| `bsh image-drive -d <drive> -o <image>` | Create a sector-by-sector disk image with bad sector handling |
+
+**Supported file types for recovery:** JPG, PNG, GIF, BMP, TIFF, PDF, DOCX, XLSX, PPTX, DOC, XLS, PPT, RTF, ZIP, RAR, 7Z, MP4, AVI, MOV, WMV, MP3, WAV, FLAC, SQLite databases, and more.
+
+**Key features:**
+- ✅ Works on drives that won't boot or mount
+- ✅ Recovers files even when file system is corrupted
+- ✅ Handles bad sectors gracefully during imaging
+- ✅ Direct low-level drive access (requires Administrator privileges)
+- ✅ Progress reporting during recovery operations
 
 ### PowerShell scripts (no Python required)
 
@@ -119,6 +150,7 @@ python -m agent --help       # show all commands
 | Guide | What it covers |
 |---|---|
 | 📖 **[This page](#troubleshooting-overview)** | Quick BIOS checks, CMOS reset, drive detection, common culprits |
+| 💾 **[Data Recovery Guide](docs/data-recovery-guide.md)** | **NEW!** Recover files from failing drives, file carving, disk imaging, step-by-step recovery workflows |
 | 💾 **[USB Boot Recovery Guide](docs/usb-boot-recovery.md)** | Create a bootable USB (Windows, Hiren's, Ventoy), boot from BIOS, run recovery tools |
 | 🔬 **[Diagnostic Tools Guide](docs/diagnostic-tools.md)** | Built-in Windows tools + free third-party tools to identify hardware & software issues |
 | 📀 **[Windows Media Creation Guide](docs/windows-media-creation.md)** | Download official Windows 10/11 ISOs, create installation USB, repair vs. clean install |
@@ -266,12 +298,15 @@ BlueScreenHelp/
 │   ├── diagnostics.py       # Windows health checks
 │   ├── troubleshooter.py    # Decision-tree troubleshooter
 │   ├── reporter.py          # HTML / TXT / JSON report generator
-│   └── ai_helper.py         # Optional AI-powered analysis
+│   ├── ai_helper.py         # Optional AI-powered analysis
+│   ├── data_recovery.py     # NEW: Drive access, file system scanning, disk imaging
+│   └── file_carving.py      # NEW: Signature-based file recovery (30+ file types)
 ├── scripts/                 # PowerShell scripts (no Python needed)
 │   ├── Invoke-WindowsDiagnostic.ps1
 │   ├── Repair-Windows.ps1
 │   └── Get-BSODInfo.ps1
 ├── docs/                    # Detailed written guides
+│   ├── data-recovery-guide.md     # NEW: Complete data recovery guide
 │   ├── usb-boot-recovery.md
 │   ├── diagnostic-tools.md
 │   ├── windows-media-creation.md
