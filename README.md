@@ -1,10 +1,24 @@
 # BlueScreenHelp
 
-A community guide to help you recover your PC from blue screen errors and boot failures — **without losing your data**.
+A comprehensive, community-maintained guide to help you recover your PC from blue screen errors and boot failures — **without losing your data**.
 
 ---
 
-## Problem: PC Freezes, Then Only Boots into BIOS
+## 🗂️ Guide Index
+
+| Guide | What it covers |
+|---|---|
+| 📖 **[This page](#troubleshooting-overview)** | Quick BIOS checks, CMOS reset, drive detection, common culprits |
+| 💾 **[USB Boot Recovery Guide](docs/usb-boot-recovery.md)** | Create a bootable USB (Windows, Hiren's, Ventoy), boot from BIOS, run recovery tools |
+| 🔬 **[Diagnostic Tools Guide](docs/diagnostic-tools.md)** | Built-in Windows tools + free third-party tools to identify hardware & software issues |
+| 📀 **[Windows Media Creation Guide](docs/windows-media-creation.md)** | Download official Windows 10/11 ISOs, create installation USB, repair vs. clean install |
+| 🔑 **[Windows Activation Guide](docs/windows-activation.md)** | Find, recover, and apply your legitimate Windows product key |
+
+---
+
+## Troubleshooting Overview
+
+### Problem: PC Freezes, Then Only Boots into BIOS
 
 Your computer freezing/locking up and then only booting into the BIOS (setup screen) instead of loading Windows is a common issue. It usually means the system can't find or properly access a bootable drive (your SSD/HDD with Windows on it), or there's a related configuration/hardware glitch triggered by whatever caused the original freeze.
 
@@ -78,12 +92,12 @@ Likely a hardware or connection issue:
 | Symptom / Situation | What to Try |
 |---|---|
 | Reset helped temporarily but issue returns | **Dead CMOS battery** — replace the CR2032 coin-cell battery (~$2–5 at any store) |
-| Drive is detected but Windows won't load | **Corrupted Windows boot** — use a Windows USB recovery stick to run Startup Repair (see below) |
+| Drive is detected but Windows won't load | **Corrupted Windows boot** — use a bootable USB to run Startup Repair (see USB guide) |
 | Drive is not detected even after reseating | **Failing drive** — test in another PC or with a USB enclosure |
 | Random freezes + boot issues | **RAM or PSU problem** — try reseating RAM sticks or testing with one stick at a time |
 
 ### How to Run Windows Startup Repair
-1. Create a Windows USB recovery drive on another PC ([Microsoft's official tool](https://support.microsoft.com/en-us/windows/create-a-recovery-drive-abb4b612-b42e-4bf8-9aeb-b2fec98b6e4d)).
+1. Create a bootable Windows USB — see the **[USB Boot Recovery Guide](docs/usb-boot-recovery.md)**.
 2. Plug it into the affected PC.
 3. In BIOS, set the USB drive as the **first boot device**.
 4. Boot from the USB → **Troubleshoot** → **Advanced Options** → **Startup Repair**.
@@ -103,6 +117,7 @@ Likely a hardware or connection issue:
 | HP | Esc, F10 |
 | Lenovo | F1, F2, Fn+F2 |
 | Acer | Del, F2 |
+| Surface | Vol Down + Power |
 
 ---
 
